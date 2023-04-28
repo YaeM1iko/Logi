@@ -1,58 +1,55 @@
 ﻿using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.Events;
-using Exiled.Events.Handlers;
-using PlayerApi = Exiled.Events.Handlers.Player;
+using Handlers = Exiled.Events.Handlers;
+using ConsoleApp6.Handlers;
+using ZXCGULSSSPLUSRANK;
+
+
 namespace Logs
+{
+
+
     public class HintEvents : Plugin<Config>
-    {       
+    {
         public override PluginPriority Priority => PluginPriority.Medium;
 
-        private EventHandlers eventHandlers;
+        private Sss neperemenaya;
+
+        private MC c3;
 
         public override void OnEnabled()
         {
+            neperemenaya= new Sss();
+            c3 = new MC(neperemenaya);
             base.OnEnabled();
-            eventHandlers = new EventHandlers();
-            PlayerApi.Died += eventHandlers.OnPlayerDeath;
-            Exiled.Events.Handlers.Warhead.Detonated += eventHandlers.OnWarheadDetonation;
-            Exiled.Events.Handlers.Server.RoundStarted += eventHandlers.OnRoundStarted;
-            Exiled.Events.Handlers.Scp049.CreatingZombie += eventHandlers.OnCreatingZombie;
-            Exiled.Events.Handlers.Scp096.Enraging += eventHandlers.OnScp096Enrage;
-            Exiled.Events.Handlers.Scp914.Activating += eventHandlers.OnScp914Activation;
-            Exiled.Events.Handlers.Scp914.ChangingKnobSetting += eventHandlers.OnScp914ChangeKnobSetting;
-            Exiled.Events.Handlers.Server.SendingConsoleCommand += eventHandlers.OnSendingConsoleCommand;
-            Exiled.Events.Handlers.Map.ExplodingGrenade += eventHandlers.OnExplodingGrenade;
+            Handlers.Player.Died += c3.OnPlayerDeath;
+            Handlers.Warhead.Detonated += c3.OnWarheadDetonation;
+            Handlers.Scp096.Enraging += c3.OnScp096Enrage;
+            Handlers.Map.AnnouncingDecontamination += c3.AnnouncingDecontamination;
+            Handlers.Map.Decontaminating += c3.Decontaminatig;
+            Handlers.Map.GeneratorActivated += c3.GeneratorActivated;
+            Handlers.Scp914.Activating += c3.OnScp914Activation;
+            Handlers.Scp914.ChangingKnobSetting += c3.OnScp914ChangeKnobSetting;
+            Handlers.Map.ExplodingGrenade += c3.OnExplodingGrenade;
+            Handlers.Player.ClosingGenerator += c3.Closegenerator;
+            Handlers.Player.Shot += c3.Shoot;
         }
 
         public override void OnDisabled()
         {
             base.OnDisabled();
-            Exiled.Events.Handlers.Player.Died -= eventHandlers.OnPlayerDeath;
-            Exiled.Events.Handlers.Warhead.Detonated -= eventHandlers.OnWarheadDetonation;
-            Exiled.Events.Handlers.Server.RoundStarted -= eventHandlers.OnRoundStarted;
-            Exiled.Events.Handlers.Scp049.CreatingZombie -= eventHandlers.OnCreatingZombie;
-            Exiled.Events.Handlers.Scp096.Enraging -= eventHandlers.OnScp096Enrage;
-            Exiled.Events.Handlers.Scp914.Activating -= eventHandlers.OnScp914Activation;
-            Exiled.Events.Handlers.Scp914.ChangingKnobSetting -= eventHandlers.OnScp914ChangeKnobSetting;
-            Exiled.Events.Handlers.Server.SendingConsoleCommand -= eventHandlers.OnSendingConsoleCommand;
-            Exiled.Events.Handlers.Map.ExplodingGrenade -= eventHandlers.OnExplodingGrenade;
-            eventHandlers = null;
+            Handlers.Player.Died -= c3.OnPlayerDeath;
+            Handlers.Warhead.Detonated -= c3.OnWarheadDetonation;
+            Handlers.Scp049.StartingRecall -= c3.OnCreatingZombie;
+            Handlers.Scp096.Enraging -= c3.OnScp096Enrage;
+            Handlers.Scp914.Activating -= c3.OnScp914Activation;
+            Handlers.Scp914.ChangingKnobSetting -= c3.OnScp914ChangeKnocbSetting;
+            Handlers.Map.ExplodingGrenade -= c3.OnExplodingGrenade;
+            c3 = null;
+            neperemenaya = null;
         }
     }
 
-    public class EventHandlers
-    {
-        public void OnPlayerDeath(PlayerDeathEventArgs ev)
-        {
-            string deathMessage = ev.HitInformation.GetDeathMessage();
-            foreach (Player player in Player.List)
-            {
-                if (!player.IsDead)
-                {
-                    player.ShowHint(deathMessage, 10f);
-                }
-            }
-        }
 
-       
+}
